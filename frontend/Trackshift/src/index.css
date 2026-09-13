@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #0A0A0A;
+  color: #F5F5F5;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #0A0A0A; }
+::-webkit-scrollbar-thumb { background: rgba(225, 6, 0, 0.35); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(225, 6, 0, 0.65); }
+
+
+@layer components {
+  .panel {
+    @apply bg-panel border border-[#3A3A3A] rounded-sm;
+  }
+  .panel-accent {
+    @apply bg-panel border border-accent/40 rounded-sm;
+  }
+  .tech-label {
+    @apply text-[10px] font-semibold tracking-[0.15em] uppercase text-[#CFCFCF];
+  }
+  .tech-label-sm {
+    @apply text-[9px] font-semibold tracking-[0.18em] uppercase text-[#8A8A8A];
+  }
+  .stat-value {
+    @apply text-2xl font-bold tabular-nums text-[#F5F5F5];
+  }
+  .stat-value-sm {
+    @apply text-lg font-bold tabular-nums text-[#F5F5F5];
+  }
+  .status-dot {
+    @apply inline-block w-1.5 h-1.5 rounded-full;
+  }
+  .btn-ghost {
+    @apply px-4 py-2 text-[11px] font-semibold tracking-[0.12em] uppercase border border-[#3A3A3A] text-[#CFCFCF] hover:border-accent hover:text-accent transition-all duration-200;
+  }
+}
+
+
+@keyframes glitch-shift {
+  0%, 100% { clip-path: inset(0 0 98% 0); transform: translateX(0); }
+  10% { clip-path: inset(10% 0 88% 0); transform: translateX(-4px); }
+  20% { clip-path: inset(30% 0 60% 0); transform: translateX(4px); }
+  30% { clip-path: inset(50% 0 40% 0); transform: translateX(-2px); }
+  40% { clip-path: inset(70% 0 20% 0); transform: translateX(2px); }
+  50% { clip-path: inset(88% 0 8% 0); transform: translateX(-4px); }
+}
+
+
+@keyframes rear-light-pulse {
+  0%, 100% { filter: drop-shadow(0 0 8px #FF4D4D) drop-shadow(0 0 20px rgba(255,77,77,0.4)); }
+  50% { filter: drop-shadow(0 0 16px #FF4D4D) drop-shadow(0 0 40px rgba(255,77,77,0.7)); }
+}
+
+.rear-light-pulse {
+  animation: rear-light-pulse 1.5s ease-in-out infinite;
+}
+
+
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+
+@keyframes circuit-glow {
+  0%, 100% { stroke-opacity: 0.35; }
+  50% { stroke-opacity: 0.7; }
+}
+
+.circuit-path {
+  animation: circuit-glow 4s ease-in-out infinite;
+}
+
+
+@keyframes car-pulse {
+  0%, 100% { filter: drop-shadow(0 0 4px #E10600); }
+  50% { filter: drop-shadow(0 0 12px #E10600) drop-shadow(0 0 24px rgba(225,6,0,0.5)); }
+}
+.car-pulse { animation: car-pulse 2s ease-in-out infinite; }
+
+
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background: #141414 !important;
+  border: 1px solid #3A3A3A !important;
+  border-radius: 2px !important;
+}
+
+
+@keyframes selected-car-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(225,6,0,0.95)) drop-shadow(0 0 20px rgba(225,6,0,0.65)) drop-shadow(0 0 35px rgba(225,6,0,0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(255,30,26,1)) drop-shadow(0 0 32px rgba(225,6,0,0.85)) drop-shadow(0 0 50px rgba(225,6,0,0.5));
+  }
+}
+.selected-car-marker { animation: selected-car-glow 2s ease-in-out infinite; }
+
+
+.carbon-texture {
+  background-color: #0A0A0A;
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 1px);
+  background-size: 8px 8px, 100% 2px;
+}
+
+.plate-metal-base {
+  background: linear-gradient(180deg, #181818 0%, #101010 100%);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.7),
+    0 12px 32px -4px rgba(0, 0, 0, 0.75),
+    0 4px 12px rgba(0, 0, 0, 0.5);
+  border: 1px solid #3A3A3A;
+}
+
+.plate-selected-bloom {
+  background: linear-gradient(90deg, rgba(225, 6, 0, 0.16) 0%, rgba(225, 6, 0, 0.03) 100%), linear-gradient(180deg, #201214 0%, #141414 100%);
+  box-shadow: 
+    0 0 22px rgba(225, 6, 0, 0.35),
+    inset 0 0 14px rgba(225, 6, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 2.5px 0 0 #E10600;
+  border: 1px solid rgba(225, 6, 0, 0.55);
+}
+
+
+.led-3d-green {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #bbf7d0 0%, #22C55E 45%, #15803d 85%, #052e16 100%);
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.85), 0 0 14px rgba(34, 197, 94, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
+}
+
+.led-3d-red-brand {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff8a87 0%, #E10600 45%, #990400 85%, #4a0200 100%);
+  box-shadow: 0 0 8px rgba(225, 6, 0, 0.95), 0 0 16px rgba(225, 6, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+  flex-shrink: 0;
+}
+
+.led-3d-amber {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fef3c7 0%, #F59E0B 45%, #b45309 85%, #451a03 100%);
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.85), 0 0 14px rgba(245, 158, 11, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
+}
+
+.led-3d-red {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fecaca 0%, #FF4D4D 45%, #b91c1c 85%, #450a0a 100%);
+  box-shadow: 0 0 6px rgba(255, 77, 77, 0.85), 0 0 14px rgba(255, 77, 77, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
+}
+
+
+.compound-bead {
+  display: inline-block;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 1px 3px rgba(0, 0, 0, 0.6);
+  flex-shrink: 0;
+}
