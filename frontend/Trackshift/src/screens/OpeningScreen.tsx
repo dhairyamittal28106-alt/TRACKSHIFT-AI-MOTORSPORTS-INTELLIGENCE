@@ -22,15 +22,35 @@ export default function OpeningScreen() {
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-      });
+      videoRef.current.play().catch(() => {});
     }
+
+    soundService.playOpeningSound();
+
+    const handleUserInteraction = () => {
+      soundService.playOpeningSound();
+    };
+
+    window.addEventListener('click', handleUserInteraction, { once: true });
+    window.addEventListener('keydown', handleUserInteraction, { once: true });
+
+    return () => {
+      soundService.stopOpeningSound();
+      window.removeEventListener('click', handleUserInteraction);
+      window.removeEventListener('keydown', handleUserInteraction);
+    };
   }, []);
+
+  const handleEnter = () => {
+    soundService.stopOpeningSound();
+    soundService.playEngineRoar();
+    navigate('/menu');
+  };
 
   return (
     <div
       className="relative w-full h-screen overflow-hidden bg-trackbg scanlines cursor-pointer select-none"
-      onClick={() => navigate('/menu')}
+      onClick={handleEnter}
     >
       {}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -71,12 +91,12 @@ export default function OpeningScreen() {
           >
             {}
             <motion.div
-              className="absolute top-8 left-8"
+              className="absolute top-4 sm:top-8 left-4 sm:left-8"
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.1, duration: 0.6 }}
             >
-              <div className="space-y-3">
+              <div className="space-y-1.5 sm:space-y-3">
                 <HudStat label="SPEED" value="287" unit="KM/H" accent />
                 <HudStat label="RPM" value="12,400" unit="" />
                 <HudStat label="GEAR" value="7" unit="" accent />
@@ -85,12 +105,12 @@ export default function OpeningScreen() {
 
             {}
             <motion.div
-              className="absolute top-8 right-8 text-right"
+              className="absolute top-4 sm:top-8 right-4 sm:right-8 text-right"
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              <div className="space-y-3">
+              <div className="space-y-1.5 sm:space-y-3">
                 <HudStat label="LAP" value="18/58" unit="" accent />
                 <HudStat label="TYRE" value="MEDIUM" unit="" />
                 <HudStat label="SECTOR" value="01:21.842" unit="" accent />
@@ -99,7 +119,7 @@ export default function OpeningScreen() {
 
             {}
             <motion.div
-              className="absolute bottom-[24%] left-1/2 -translate-x-1/2 w-[360px]"
+              className="absolute bottom-[20%] sm:bottom-[24%] left-1/2 -translate-x-1/2 w-[85vw] max-w-[360px]"
               initial={{ scaleX: 0, opacity: 0 }}
               animate={{ scaleX: 1, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
@@ -130,7 +150,7 @@ export default function OpeningScreen() {
 
             {}
             {['top-4 left-4', 'top-4 right-4', 'bottom-4 left-4', 'bottom-4 right-4'].map((pos, i) => (
-              <div key={i} className={`absolute ${pos} w-8 h-8`}>
+              <div key={i} className={`absolute ${pos} w-8 h-8 pointer-events-none`}>
                 <svg viewBox="0 0 32 32" fill="none" className="w-full h-full opacity-40">
                   {i === 0 && <path d="M 0 14 L 0 0 L 14 0" stroke="#E10600" strokeWidth="1.5" />}
                   {i === 1 && <path d="M 32 14 L 32 0 L 18 0" stroke="#E10600" strokeWidth="1.5" />}
@@ -147,7 +167,7 @@ export default function OpeningScreen() {
       <AnimatePresence>
         {(phase === 'logo' || phase === 'enter') && (
           <motion.div
-            className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
+            className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -156,7 +176,7 @@ export default function OpeningScreen() {
             <div
               className="absolute"
               style={{
-                width: '640px',
+                width: 'min(640px, 90vw)',
                 height: '240px',
                 background: 'radial-gradient(ellipse at center, rgba(225, 6, 0, 0.16) 0%, rgba(225, 6, 0, 0.03) 50%, transparent 75%)',
               }}
@@ -165,13 +185,13 @@ export default function OpeningScreen() {
             {}
             <div className="relative text-center">
               <motion.div
-                className="flex items-baseline justify-center"
+                className="flex items-baseline justify-center flex-wrap"
                 initial={{ letterSpacing: '0.4em', opacity: 0 }}
                 animate={{ letterSpacing: '0.12em', opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.1 }}
               >
                 <span
-                  className="text-7xl lg:text-8xl font-black text-[#F5F5F5]"
+                  className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-[#F5F5F5]"
                   style={{
                     letterSpacing: '0.1em',
                     lineHeight: 1,
@@ -181,10 +201,10 @@ export default function OpeningScreen() {
                   TRACK
                 </span>
                 <span
-                  className="text-7xl lg:text-8xl font-black"
+                  className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black"
                   style={{
                     color: '#FFFFFF',
-                    WebkitTextStroke: '2.5px #FF1A1A',
+                    WebkitTextStroke: '1.8px #FF1A1A',
                     paintOrder: 'stroke fill',
                     letterSpacing: '0.1em',
                     lineHeight: 1,
@@ -232,8 +252,7 @@ export default function OpeningScreen() {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                soundService.playEngineRoar();
-                navigate('/menu');
+                handleEnter();
               }}
               className="group flex items-center gap-3.5 px-9 py-3.5 rounded-md text-white text-xs font-black tracking-[0.25em] uppercase transition-all duration-300 relative overflow-hidden"
               style={{

@@ -30,8 +30,31 @@ function playSound(path: string, volume = 0.3): void {
 }
 
 let trackAudioInstance: HTMLAudioElement | null = null;
+let openingAudioInstance: HTMLAudioElement | null = null;
 
 export const soundService = {
+  playOpeningSound() {
+    if (!isClient) return;
+    if (!openingAudioInstance) {
+      openingAudioInstance = new Audio('/sounds/START.mp4');
+      openingAudioInstance.loop = true;
+      openingAudioInstance.volume = 0.5;
+    }
+    const promise = openingAudioInstance.play();
+    if (promise !== undefined) {
+      promise.catch(() => {
+        // Autoplay may be blocked until user interaction
+      });
+    }
+  },
+
+  stopOpeningSound() {
+    if (openingAudioInstance) {
+      openingAudioInstance.pause();
+      openingAudioInstance.currentTime = 0;
+    }
+  },
+
   playEngineRoar() {
     playSound('/sounds/dragon-studio-car-engine-372477.mp3', 0.45);
   },
@@ -81,3 +104,4 @@ export const soundService = {
     }
   },
 };
+

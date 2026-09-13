@@ -368,9 +368,8 @@ export default function RaceControlScreen() {
 
           {}
           <div
-            className="flex flex-col flex-shrink-0 overflow-hidden relative z-10"
+            className="flex flex-col flex-shrink-0 overflow-hidden relative z-10 w-full lg:w-[268px]"
             style={{
-              width: '268px',
               background: 'linear-gradient(180deg, #0e1119 0%, #080a0f 100%)',
               boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.12), -4px 0 20px rgba(0, 0, 0, 0.5)',
             }}

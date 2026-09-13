@@ -107,22 +107,22 @@ export default function MainMenuScreen() {
       </div>
 
       {}
-      <div className="absolute right-0 top-0 bottom-0 w-[54%] max-w-[640px] flex flex-col z-10">
+      <div className="relative md:absolute right-0 top-0 bottom-0 w-full md:w-[54%] max-w-[640px] flex flex-col z-10 h-full overflow-y-auto bg-[#0A0A0A]/85 md:bg-transparent">
         {}
         <motion.div
-          className="px-10 pt-10 pb-6 flex-shrink-0"
+          className="px-5 sm:px-10 pt-6 sm:pt-10 pb-4 sm:pb-6 flex-shrink-0"
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45 }}
         >
           {}
-          <h1 className="text-4xl lg:text-5xl font-black tracking-[0.2em] leading-none uppercase select-none">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-[0.2em] leading-none uppercase select-none">
             <span className="text-[#F5F5F5] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">TRACK</span>
             <span
               className="font-black"
               style={{
                 color: '#FFFFFF',
-                WebkitTextStroke: '2px #FF1A1A',
+                WebkitTextStroke: '1.8px #FF1A1A',
                 paintOrder: 'stroke fill',
                 textShadow: '0 0 16px rgba(255, 26, 26, 0.9), 0 0 32px rgba(225, 6, 0, 0.65)',
               }}
@@ -132,13 +132,13 @@ export default function MainMenuScreen() {
           </h1>
 
           {}
-          <p className="text-[10px] lg:text-[10.5px] font-black tracking-[0.28em] uppercase text-gray-400 mt-2.5">
+          <p className="text-[9.5px] sm:text-[10px] lg:text-[10.5px] font-black tracking-[0.28em] uppercase text-gray-400 mt-2">
             AI MOTORSPORT INTELLIGENCE
           </p>
 
           {}
           <div
-            className="mt-3.5 h-0.5 w-16"
+            className="mt-3 h-0.5 w-16"
             style={{
               background: '#FF1A1A',
               boxShadow: '0 0 12px rgba(255, 26, 26, 0.9), 0 0 20px rgba(225, 6, 0, 0.5)',
@@ -147,7 +147,7 @@ export default function MainMenuScreen() {
         </motion.div>
 
         {}
-        <nav className="flex-1 px-10 space-y-3 overflow-y-auto py-1 flex flex-col justify-center">
+        <nav className="flex-1 px-5 sm:px-10 space-y-2.5 sm:space-y-3 overflow-y-auto py-2 flex flex-col justify-center">
           {MENU_ITEMS.map((item, i) => {
             const isActive = item.path === activePath;
 
@@ -169,7 +169,7 @@ export default function MainMenuScreen() {
                   className="group block relative"
                 >
                   <div
-                    className="relative flex items-center gap-4 px-5 py-3.5 rounded-lg transition-all duration-200 overflow-hidden"
+                    className="relative flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 sm:py-3.5 rounded-lg transition-all duration-200 overflow-hidden"
                     style={{
                       background: isActive
                         ? 'linear-gradient(90deg, rgba(225, 6, 0, 0.15) 0%, rgba(225, 6, 0, 0.02) 100%), linear-gradient(180deg, #1e1414 0%, #141414 100%)'
@@ -199,7 +199,7 @@ export default function MainMenuScreen() {
 
                     {}
                     <div
-                      className="w-10 h-10 rounded-md flex items-center justify-center shrink-0 transition-all duration-200"
+                      className="w-9 sm:w-10 h-9 sm:h-10 rounded-md flex items-center justify-center shrink-0 transition-all duration-200"
                       style={{
                         background: isActive
                           ? 'rgba(225, 6, 0, 0.15)'
@@ -220,9 +220,9 @@ export default function MainMenuScreen() {
                     </div>
 
                     {}
-                    <div className="flex-1 min-w-0 pr-2">
+                    <div className="flex-1 min-w-0 pr-1">
                       <div
-                        className="text-sm font-black uppercase tracking-wider transition-colors truncate"
+                        className="text-xs sm:text-sm font-black uppercase tracking-wider transition-colors truncate"
                         style={{
                           color: isActive ? '#ffffff' : '#cbd5e1',
                           textShadow: isActive ? '0 1px 3px rgba(0,0,0,0.9)' : 'none',
@@ -231,7 +231,7 @@ export default function MainMenuScreen() {
                         {item.label}
                       </div>
                       <div
-                        className="text-[10px] font-medium tracking-wide mt-0.5 transition-colors truncate"
+                        className="text-[9.5px] sm:text-[10px] font-medium tracking-wide mt-0.5 transition-colors truncate"
                         style={{
                           color: isActive ? '#CFCFCF' : '#8A8A8A',
                         }}
@@ -261,7 +261,7 @@ export default function MainMenuScreen() {
 
         {}
         <motion.div
-          className="px-10 py-5 flex items-center gap-6 flex-shrink-0"
+          className="px-5 sm:px-10 py-3.5 sm:py-5 flex flex-wrap items-center gap-3 sm:gap-6 flex-shrink-0"
           style={{
             borderTop: '1px solid rgba(255, 255, 255, 0.08)',
             background: 'linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.55) 100%)',
@@ -274,17 +274,17 @@ export default function MainMenuScreen() {
           <div className="text-[10px] font-black tracking-[0.2em] uppercase text-gray-400">
             2026 SEASON
           </div>
-          <div className="w-px h-3.5 bg-white/[0.12]" />
+          <div className="hidden sm:block w-px h-3.5 bg-white/[0.12]" />
           <div className="flex items-center gap-2">
             <span className="led-3d-green animate-pulse-slow" />
             <span className="text-[9.5px] font-black tracking-[0.2em] uppercase text-gray-400">
-              AI ENGINE: READY
+              AI: READY
             </span>
           </div>
           <div className="flex items-center gap-2">
             <span className="led-3d-green animate-pulse-slow" />
             <span className="text-[9.5px] font-black tracking-[0.2em] uppercase text-gray-400">
-              DATA ENGINE: READY
+              DATA: READY
             </span>
           </div>
         </motion.div>

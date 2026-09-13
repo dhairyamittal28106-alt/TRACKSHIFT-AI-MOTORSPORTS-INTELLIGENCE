@@ -39,10 +39,10 @@ const foldChartData = CV_FOLD_RESULTS.map(f => ({
 
 export default function MethodologyValidationScreen() {
   return (
-    <div className="flex h-screen bg-trackbg overflow-hidden text-gray-200">
+    <div className="flex flex-col md:flex-row h-screen bg-trackbg overflow-hidden text-gray-200">
       <SideNav />
 
-      <div className="flex flex-col flex-1 min-w-0">
+      <div className="flex flex-col flex-1 min-w-0 overflow-y-auto">
         <HeaderBar
           left={
             <>

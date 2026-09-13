@@ -27,10 +27,10 @@ export default function ValidationScreen() {
   }, [paceCost]);
 
   return (
-    <div className="flex h-screen bg-trackbg overflow-hidden text-gray-200 select-none">
+    <div className="flex flex-col md:flex-row h-screen bg-trackbg overflow-hidden text-gray-200 select-none">
       <SideNav />
 
-      <div className="flex flex-col flex-1 min-w-0">
+      <div className="flex flex-col flex-1 min-w-0 overflow-y-auto">
         <HeaderBar
           left={
             <>
