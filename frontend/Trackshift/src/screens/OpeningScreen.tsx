@@ -27,17 +27,21 @@ export default function OpeningScreen() {
 
     soundService.playOpeningSound();
 
+    const interactionEvents = ['pointerdown', 'mousemove', 'click', 'keydown', 'touchstart', 'scroll'];
+
     const handleUserInteraction = () => {
       soundService.playOpeningSound();
     };
 
-    window.addEventListener('click', handleUserInteraction, { once: true });
-    window.addEventListener('keydown', handleUserInteraction, { once: true });
+    interactionEvents.forEach((evt) => {
+      window.addEventListener(evt, handleUserInteraction, { passive: true });
+    });
 
     return () => {
       soundService.stopOpeningSound();
-      window.removeEventListener('click', handleUserInteraction);
-      window.removeEventListener('keydown', handleUserInteraction);
+      interactionEvents.forEach((evt) => {
+        window.removeEventListener(evt, handleUserInteraction);
+      });
     };
   }, []);
 

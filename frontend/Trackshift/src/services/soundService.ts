@@ -38,12 +38,13 @@ export const soundService = {
     if (!openingAudioInstance) {
       openingAudioInstance = new Audio('/sounds/START.mp4');
       openingAudioInstance.loop = true;
-      openingAudioInstance.volume = 0.5;
+      openingAudioInstance.volume = 0.75;
     }
+    openingAudioInstance.muted = false;
     const promise = openingAudioInstance.play();
     if (promise !== undefined) {
       promise.catch(() => {
-        // Autoplay may be blocked until user interaction
+        // Autoplay may be deferred until first user interaction
       });
     }
   },
