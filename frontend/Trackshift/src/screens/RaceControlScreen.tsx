@@ -92,49 +92,49 @@ export default function RaceControlScreen() {
 
   return (
     <div
-      className="flex h-screen overflow-hidden relative"
+      className="flex flex-col md:flex-row h-screen overflow-hidden relative"
       style={{ background: 'radial-gradient(ellipse at 50% 30%, #0d121c 0%, #040507 100%)' }}
     >
       <SideNav />
 
-      <div className="flex flex-col flex-1 min-w-0">
-        {}
+      <div className="flex flex-col flex-1 min-w-0 overflow-y-auto lg:overflow-hidden">
+        {/* Top Command Bar */}
         <CommandBar sessionTime={sessionTime} driverData={driverData} />
 
-        {}
+        {/* Safety Alert Banner */}
         <div
-          className="flex-shrink-0 flex items-center gap-3 px-5 py-1.5 relative z-10"
+          className="flex-shrink-0 flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-1.5 relative z-10 text-[9.5px] sm:text-[10px]"
           style={{
             background: 'linear-gradient(90deg, rgba(217,119,6,0.12) 0%, rgba(217,119,6,0.06) 60%, transparent 100%)',
             borderBottom: '1px solid rgba(217,119,6,0.35)',
           }}
         >
           <AlertTriangle size={11} className="text-amber-400 flex-shrink-0 drop-shadow-[0_0_5px_rgba(217,119,6,0.8)]" />
-          <span className="text-[10px] font-black tracking-[0.18em] uppercase text-amber-400 drop-shadow-[0_0_5px_rgba(217,119,6,0.6)]">
+          <span className="font-black tracking-[0.18em] uppercase text-amber-400 drop-shadow-[0_0_5px_rgba(217,119,6,0.6)] truncate">
             SIMULATED SCENARIO — ILLUSTRATIVE RACE DATA
           </span>
-          <span className="text-gray-600 text-[9px] flex-shrink-0">·</span>
-          <span className="text-[10px] text-gray-500 font-medium tracking-wide">
-            Live race telemetry is not connected. Tyre degradation intelligence shown here is derived from the historical TrackShift dataset.
+          <span className="text-gray-600 text-[9px] flex-shrink-0 hidden sm:inline">·</span>
+          <span className="text-gray-500 font-medium tracking-wide truncate hidden sm:inline">
+            Live race telemetry is not connected. Tyre degradation intelligence derived from historical dataset.
           </span>
         </div>
 
-        {}
-        <div className="flex flex-1 min-h-0 overflow-hidden">
+        {/* Main Workspace */}
+        <div className="flex flex-col lg:flex-row flex-1 min-h-0 overflow-y-auto lg:overflow-hidden">
 
-          {}
+          {/* Left Driver Selector Bar */}
           <div
-            className="flex flex-col flex-shrink-0 overflow-hidden relative z-10"
+            className="flex flex-row lg:flex-col flex-shrink-0 overflow-x-auto lg:overflow-y-auto relative z-10 w-full lg:w-[172px] p-2 gap-2"
             style={{
-              width: '172px',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
               borderRight: '1px solid rgba(255, 255, 255, 0.08)',
               background: 'linear-gradient(180deg, #111520 0%, #080a0f 100%)',
               boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.12), 4px 0 20px rgba(0, 0, 0, 0.5)',
             }}
           >
-            {}
+            {/* Grid Title Header */}
             <div
-              className="px-3.5 py-2.5 flex-shrink-0"
+              className="hidden lg:flex px-3.5 py-2.5 flex-shrink-0"
               style={{
                 borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
                 background: 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%)',
@@ -148,8 +148,8 @@ export default function RaceControlScreen() {
               </div>
             </div>
 
-            {}
-            <div className="flex-1 overflow-auto py-2 px-2 space-y-1.5">
+            {/* Drivers List */}
+            <div className="flex flex-row lg:flex-col gap-2 w-full">
               {drivers.map(d => {
                 const isSelected = d.driverNumber === selectedDriver;
                 const pos = DRIVER_POSITIONS_RACE[d.driverNumber] ?? '—';
@@ -160,7 +160,7 @@ export default function RaceControlScreen() {
                       soundService.playUIClick();
                       setSelectedDriver(d.driverNumber);
                     }}
-                    className="w-full text-left transition-all duration-200 relative overflow-hidden rounded-md group"
+                    className="w-36 lg:w-full flex-shrink-0 text-left transition-all duration-200 relative overflow-hidden rounded-md group"
                     style={{
                       background: isSelected
                         ? 'linear-gradient(90deg, rgba(225, 6, 0, 0.18) 0%, rgba(225, 6, 0, 0.03) 100%), linear-gradient(180deg, #1e1414 0%, #141414 100%)'
@@ -173,7 +173,7 @@ export default function RaceControlScreen() {
                       padding: '6px 8px',
                     }}
                   >
-                    {}
+                    {/* Position + Name + Tyre */}
                     <div className="flex items-center gap-1.5">
                       <span
                         className="font-mono tabular-nums flex-shrink-0 text-center"
@@ -207,7 +207,7 @@ export default function RaceControlScreen() {
                         }}
                       />
                     </div>
-                    {}
+                    {/* Compound + Age + Pace */}
                     <div className="flex items-center gap-1.5 mt-1">
                       <span
                         className="font-black tracking-widest"
@@ -232,39 +232,14 @@ export default function RaceControlScreen() {
                 );
               })}
             </div>
-
-            {}
-            <div
-              className="px-3.5 py-2.5 flex-shrink-0 space-y-1.5"
-              style={{
-                borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-                background: 'linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%)',
-              }}
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] font-black tracking-[0.2em] uppercase text-gray-500">LAP</span>
-                <span className="font-mono text-[11px] font-black tabular-nums text-white">
-                  {driverData?.lap ?? '—'}/{driverData?.totalLaps ?? '—'}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] font-black tracking-[0.2em] uppercase text-gray-500">SESSION</span>
-                <div className="flex items-center gap-1.5">
-                  <span className="led-3d-green animate-pulse" />
-                  <span className="text-[9px] font-black tracking-[0.2em] uppercase text-status-green drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]">
-                    LIVE
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
 
-          {}
+          {/* Center Circuit View */}
           <div
-            className="flex-1 flex flex-col min-w-0 overflow-hidden relative"
+            className="flex-1 flex flex-col min-w-0 min-h-[340px] lg:min-h-0 overflow-hidden relative"
             style={{ borderRight: '1px solid rgba(255, 255, 255, 0.08)' }}
           >
-            {}
+            {/* Circuit Header */}
             <div
               className="flex-1 relative flex items-center justify-center min-h-0 overflow-hidden"
               style={{
@@ -274,7 +249,7 @@ export default function RaceControlScreen() {
                 `,
               }}
             >
-              {}
+              {/* Header Bar */}
               <div
                 className="absolute top-0 left-0 right-0 px-5 py-2 flex items-center justify-between z-10"
                 style={{
@@ -287,14 +262,14 @@ export default function RaceControlScreen() {
                   <span className="text-[10px] font-black tracking-[0.22em] uppercase text-gray-400">
                     CIRCUIT VIEW
                   </span>
-                  <span className="text-[10px] font-black tracking-[0.22em] uppercase text-accent drop-shadow-[0_0_8px_rgba(225,6,0,0.5)]">
+                  <span className="text-[10px] font-black tracking-[0.22em] uppercase text-accent drop-shadow-[0_0_8px_rgba(225,6,0,0.5)] truncate">
                     2026 AUSTRALIAN GP · ALBERT PARK
                   </span>
-                  <span className="text-[9px] font-bold tracking-wider text-gray-600">
+                  <span className="text-[9px] font-bold tracking-wider text-gray-600 hidden sm:inline">
                     5.278 KM
                   </span>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="hidden sm:flex items-center gap-4">
                   {['S1', 'S2', 'S3'].map(s => (
                     <span key={s} className="text-[9px] font-black tracking-[0.2em] uppercase text-gray-500">
                       {s}
@@ -303,8 +278,8 @@ export default function RaceControlScreen() {
                 </div>
               </div>
 
-              {}
-              <div className="relative w-full h-full flex items-center justify-center p-6 pt-10">
+              {/* Map SVG */}
+              <div className="relative w-full h-full flex items-center justify-center p-4 sm:p-6 pt-10">
                 <CircuitMap
                   selectedDriver={selectedDriver}
                   onSelect={setSelectedDriver}
@@ -312,9 +287,9 @@ export default function RaceControlScreen() {
                 />
               </div>
 
-              {}
+              {/* Viewport Corners */}
               {(['top-3 left-3', 'top-3 right-3', 'bottom-3 left-3', 'bottom-3 right-3'] as const).map((pos, i) => (
-                <div key={i} className={`absolute ${pos} opacity-40`}>
+                <div key={i} className={`absolute ${pos} opacity-40 pointer-events-none`}>
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                     {i === 0 && <path d="M0 5 L0 0 L5 0" stroke="#E10600" strokeWidth="1.5" />}
                     {i === 1 && <path d="M12 5 L12 0 L7 0" stroke="#E10600" strokeWidth="1.5" />}
@@ -325,7 +300,7 @@ export default function RaceControlScreen() {
               ))}
             </div>
 
-            {}
+            {/* Stint Timeline */}
             <div
               className="flex-shrink-0 px-5 py-3 relative z-10"
               style={{
@@ -366,9 +341,9 @@ export default function RaceControlScreen() {
             </div>
           </div>
 
-          {}
+          {/* Right Live Telemetry Panel */}
           <div
-            className="flex flex-col flex-shrink-0 overflow-hidden relative z-10 w-full lg:w-[268px]"
+            className="flex flex-col flex-shrink-0 overflow-visible lg:overflow-hidden relative z-10 w-full lg:w-[268px] border-t lg:border-t-0 lg:border-l border-white/10"
             style={{
               background: 'linear-gradient(180deg, #0e1119 0%, #080a0f 100%)',
               boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.12), -4px 0 20px rgba(0, 0, 0, 0.5)',

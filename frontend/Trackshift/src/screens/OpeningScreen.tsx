@@ -8,8 +8,6 @@ export default function OpeningScreen() {
   const [phase, setPhase] = useState<'video' | 'hud' | 'logo' | 'enter'>('video');
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-
   useEffect(() => {
     const t1 = setTimeout(() => setPhase('hud'), 800);
     const t2 = setTimeout(() => setPhase('logo'), 2200);
@@ -22,33 +20,27 @@ export default function OpeningScreen() {
     };
   }, []);
 
-  const attemptPlayAudio = () => {
-    soundService.playOpeningSound().then((success) => {
-      if (success) setIsPlayingAudio(true);
-    });
-  };
-
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch(() => {});
     }
 
-    attemptPlayAudio();
+    soundService.playOpeningSound();
 
-    const interactionEvents = ['pointerdown', 'click', 'keydown', 'touchstart', 'mousemove'];
+    const interactionEvents = ['pointermove', 'mousemove', 'mouseenter', 'pointerdown', 'click', 'keydown', 'touchstart', 'scroll'];
 
-    const handleUserInteraction = () => {
-      attemptPlayAudio();
+    const handleAutoPlay = () => {
+      soundService.playOpeningSound();
     };
 
     interactionEvents.forEach((evt) => {
-      window.addEventListener(evt, handleUserInteraction, { passive: true });
+      window.addEventListener(evt, handleAutoPlay, { passive: true });
     });
 
     return () => {
       soundService.stopOpeningSound();
       interactionEvents.forEach((evt) => {
-        window.removeEventListener(evt, handleUserInteraction);
+        window.removeEventListener(evt, handleAutoPlay);
       });
     };
   }, []);
@@ -60,10 +52,17 @@ export default function OpeningScreen() {
   };
 
   return (
-    <div
-      className="relative w-full h-screen overflow-hidden bg-trackbg scanlines cursor-pointer select-none"
-      onClick={attemptPlayAudio}
-    >
+    <div className="relative w-full h-screen overflow-hidden bg-trackbg scanlines cursor-pointer select-none">
+      {/* Background Audio */}
+      <audio
+        autoPlay
+        loop
+        playsInline
+        src="/sounds/START.mp4"
+        className="hidden"
+      />
+
+      {/* Video Background */}
       {}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <video
@@ -113,31 +112,6 @@ export default function OpeningScreen() {
                 <HudStat label="RPM" value="12,400" unit="" />
                 <HudStat label="GEAR" value="7" unit="" accent />
               </div>
-            </motion.div>
-
-            {}
-            <motion.div
-              className="absolute top-4 left-1/2 -translate-x-1/2 pointer-events-auto z-30"
-              initial={{ y: -10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  attemptPlayAudio();
-                }}
-                className="flex items-center gap-2 px-3.5 py-1 rounded-full border text-[9.5px] font-black tracking-widest uppercase transition-all duration-300 backdrop-blur-md"
-                style={{
-                  background: isPlayingAudio ? 'rgba(0, 0, 0, 0.65)' : 'rgba(225, 6, 0, 0.25)',
-                  borderColor: isPlayingAudio ? 'rgba(34, 197, 94, 0.4)' : 'rgba(225, 6, 0, 0.8)',
-                  color: isPlayingAudio ? '#4ADE80' : '#FF4D4D',
-                  boxShadow: isPlayingAudio ? '0 0 10px rgba(34, 197, 94, 0.25)' : '0 0 18px rgba(225, 6, 0, 0.65)',
-                }}
-              >
-                <span className={`w-2 h-2 rounded-full ${isPlayingAudio ? 'bg-emerald-400 animate-pulse' : 'bg-red-500 animate-ping'}`} />
-                <span>{isPlayingAudio ? 'AUDIO: ACTIVE' : 'CLICK ANYWHERE FOR AUDIO'}</span>
-              </button>
             </motion.div>
 
             {}
