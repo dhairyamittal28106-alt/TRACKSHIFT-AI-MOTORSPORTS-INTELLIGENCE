@@ -33,20 +33,18 @@ let trackAudioInstance: HTMLAudioElement | null = null;
 let openingAudioInstance: HTMLAudioElement | null = null;
 
 export const soundService = {
-  playOpeningSound() {
-    if (!isClient) return;
+  playOpeningSound(): Promise<boolean> {
+    if (!isClient) return Promise.resolve(false);
     if (!openingAudioInstance) {
       openingAudioInstance = new Audio('/sounds/START.mp4');
       openingAudioInstance.loop = true;
-      openingAudioInstance.volume = 0.75;
+      openingAudioInstance.volume = 0.8;
     }
     openingAudioInstance.muted = false;
-    const promise = openingAudioInstance.play();
-    if (promise !== undefined) {
-      promise.catch(() => {
-        // Autoplay may be deferred until first user interaction
-      });
-    }
+    return openingAudioInstance
+      .play()
+      .then(() => true)
+      .catch(() => false);
   },
 
   stopOpeningSound() {
