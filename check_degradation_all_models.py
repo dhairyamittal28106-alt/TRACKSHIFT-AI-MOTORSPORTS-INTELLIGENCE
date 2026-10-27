@@ -25,13 +25,13 @@ import pandas as pd
 warnings.filterwarnings("ignore")
 
 
-# ============================================================
-# CONFIG
-# ============================================================
+
+
+
 
 DATA_FILE = "ENRICHED_TYRE_DATASET_2022_ONWARDS.csv"
 
-# Change this only if your models are stored elsewhere
+
 MODEL_DIR = "models"
 
 AGES = list(range(1, 41))
@@ -39,9 +39,9 @@ AGES = list(range(1, 41))
 COMPOUNDS = ["SOFT", "MEDIUM", "HARD"]
 
 
-# ============================================================
-# FIND MODEL FILES
-# ============================================================
+
+
+
 
 def find_model(patterns):
     for pattern in patterns:
@@ -89,9 +89,9 @@ print("XGBoost  :", XGB_PATH)
 print("CatBoost :", CAT_PATH)
 
 
-# ============================================================
-# LOAD DATA
-# ============================================================
+
+
+
 
 print("\nLoading dataset...")
 
@@ -100,9 +100,9 @@ df = pd.read_csv(DATA_FILE)
 print("Dataset shape:", df.shape)
 
 
-# ============================================================
-# REQUIRED FEATURES
-# ============================================================
+
+
+
 
 CAT_COLS = [
     "Driver",
@@ -148,9 +148,9 @@ if missing:
     raise SystemExit
 
 
-# ============================================================
-# BUILD CAUSAL FEATURES
-# ============================================================
+
+
+
 
 print("\nBuilding causal features...")
 
@@ -165,8 +165,8 @@ if "SessionKey" not in df.columns:
         + df["SessionName"].astype(str)
     )
 
-# Session pace evolution:
-# ONLY previous laps are used.
+
+
 df["SessionPaceEvolution"] = (
     df.groupby("SessionKey")["LapTimeSeconds"]
       .transform(
@@ -174,8 +174,8 @@ df["SessionPaceEvolution"] = (
       )
 )
 
-# Driver best so far:
-# ONLY previous laps are used.
+
+
 df["DriverBestSoFar"] = (
     df.groupby(["SessionKey", "Driver"])["LapTimeSeconds"]
       .transform(
@@ -183,7 +183,7 @@ df["DriverBestSoFar"] = (
       )
 )
 
-# Global fallback
+
 global_fallback = df["LapTimeSeconds"].median()
 
 df["SessionPaceEvolution"] = (
@@ -197,14 +197,14 @@ df["DriverBestSoFar"] = (
 )
 
 
-# Tyre age features
+
 df["TyreAge_sq"] = df["TyreAge"] ** 2
 df["TyreAge_cb"] = df["TyreAge"] ** 3
 
 
-# ============================================================
-# SELECT ONE SHARED REFERENCE CONTEXT
-# ============================================================
+
+
+
 
 print("\nSelecting shared reference context...")
 
@@ -216,8 +216,8 @@ if len(eligible) == 0:
     raise RuntimeError("No SOFT/MEDIUM/HARD rows found.")
 
 
-# Use median numerical context and mode categorical context.
-# This creates ONE shared environment for all compounds.
+
+
 
 reference = {}
 
@@ -234,8 +234,8 @@ for col in NUM_COLS:
     ).median()
 
 for col in BOOL_COLS:
-    # IMPORTANT:
-    # FreshTyre stays CONSTANT for every tyre age.
+    
+    
     if col == "FreshTyre":
         reference[col] = 0
     else:
@@ -256,9 +256,9 @@ for k, v in reference.items():
     print(f"{k:35s}: {v}")
 
 
-# ============================================================
-# LOAD MODELS
-# ============================================================
+
+
+
 
 import joblib
 
@@ -296,9 +296,9 @@ if not models:
     )
 
 
-# ============================================================
-# CREATE INPUT
-# ============================================================
+
+
+
 
 def make_input(compound, age):
 
@@ -306,20 +306,20 @@ def make_input(compound, age):
 
     row["Compound"] = compound
 
-    # ONLY tyre-age variables change
+    
     row["TyreAge"] = age
     row["TyreAge_sq"] = age ** 2
     row["TyreAge_cb"] = age ** 3
 
-    # FreshTyre NEVER changes during sweep
+    
     row["FreshTyre"] = reference["FreshTyre"]
 
     return pd.DataFrame([row])[FEATURES]
 
 
-# ============================================================
-# MODEL PREDICTION HELPERS
-# ============================================================
+
+
+
 
 def predict_model(model_name, model, X):
 
@@ -330,9 +330,9 @@ def predict_model(model_name, model, X):
     this diagnostic may need to use that same preprocessing.
     """
 
-    # ----------------------------
-    # CatBoost
-    # ----------------------------
+    
+    
+    
     if model_name == "CatBoost":
 
         try:
@@ -350,12 +350,12 @@ def predict_model(model_name, model, X):
                 model.predict(X2)[0]
             )
 
-    # ----------------------------
-    # XGBoost
-    # ----------------------------
+    
+    
+    
     if model_name == "XGBoost":
 
-        # Native XGBoost Booster
+        
         if hasattr(model, "get_booster"):
 
             import xgboost as xgb
@@ -375,7 +375,7 @@ def predict_model(model_name, model, X):
                 model.predict(dm)[0]
             )
 
-        # sklearn XGBRegressor
+        
         else:
 
             X2 = X.copy()
@@ -391,9 +391,9 @@ def predict_model(model_name, model, X):
                 model.predict(X2)[0]
             )
 
-    # ----------------------------
-    # LightGBM
-    # ----------------------------
+    
+    
+    
     if model_name == "LightGBM":
 
         try:
@@ -416,9 +416,9 @@ def predict_model(model_name, model, X):
     )
 
 
-# ============================================================
-# GENERATE CURVES
-# ============================================================
+
+
+
 
 all_results = []
 
@@ -474,7 +474,7 @@ for compound in COMPOUNDS:
 
                 predictions[model_name] = np.nan
 
-        # Ensemble = mean of available models
+        
         valid_preds = [
             v for v in predictions.values()
             if np.isfinite(v)
@@ -492,9 +492,9 @@ for compound in COMPOUNDS:
 curves = pd.DataFrame(all_results)
 
 
-# ============================================================
-# CONVERT ABSOLUTE PREDICTION → AGE-RELATED PACE LOSS
-# ============================================================
+
+
+
 
 print("\nCalculating age-related pace loss...")
 
@@ -519,9 +519,9 @@ for model_col in [
     )
 
 
-# ============================================================
-# SUMMARY
-# ============================================================
+
+
+
 
 print("\n")
 print("=" * 70)
@@ -554,7 +554,7 @@ for compound in COMPOUNDS:
         y = c[loss_col].values
         x = c["tyre_age"].values
 
-        # 10-lap age change: age 1 -> age 10
+        
         loss_10 = float(
             c.loc[
                 c["tyre_age"] == 10,
@@ -562,7 +562,7 @@ for compound in COMPOUNDS:
             ].iloc[0]
         )
 
-        # 20-lap age change
+        
         loss_20 = float(
             c.loc[
                 c["tyre_age"] == 20,
@@ -570,7 +570,7 @@ for compound in COMPOUNDS:
             ].iloc[0]
         )
 
-        # 40-lap age change
+        
         loss_40 = float(
             c.loc[
                 c["tyre_age"] == 40,
@@ -578,7 +578,7 @@ for compound in COMPOUNDS:
             ].iloc[0]
         )
 
-        # Linear slope — secondary diagnostic only
+        
         slope = float(
             np.polyfit(x, y, 1)[0]
         )
@@ -604,9 +604,9 @@ for compound in COMPOUNDS:
 summary = pd.DataFrame(summary_rows)
 
 
-# ============================================================
-# PRINT ORDERINGS
-# ============================================================
+
+
+
 
 print("\n")
 print("=" * 70)
@@ -645,9 +645,9 @@ for metric in [
         )
 
 
-# ============================================================
-# SAVE NEW FILES
-# ============================================================
+
+
+
 
 curve_file = (
     "DIAGNOSTIC_FIXED_FRESHTYRE_ALL_MODELS_CURVES.csv"
@@ -668,9 +668,9 @@ summary.to_csv(
 )
 
 
-# ============================================================
-# FINAL
-# ============================================================
+
+
+
 
 print("\n")
 print("=" * 70)

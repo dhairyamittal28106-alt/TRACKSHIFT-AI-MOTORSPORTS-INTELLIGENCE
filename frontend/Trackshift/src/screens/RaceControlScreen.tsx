@@ -98,10 +98,10 @@ export default function RaceControlScreen() {
       <SideNav />
 
       <div className="flex flex-col flex-1 min-w-0 overflow-y-auto lg:overflow-hidden">
-        {/* Top Command Bar */}
+         
         <CommandBar sessionTime={sessionTime} driverData={driverData} />
 
-        {/* Safety Alert Banner */}
+         
         <div
           className="flex-shrink-0 flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-1.5 relative z-10 text-[9.5px] sm:text-[10px]"
           style={{
@@ -119,10 +119,10 @@ export default function RaceControlScreen() {
           </span>
         </div>
 
-        {/* Main Workspace */}
+         
         <div className="flex flex-col lg:flex-row flex-1 min-h-0 overflow-y-auto lg:overflow-hidden">
 
-          {/* Left Driver Selector Bar */}
+           
           <div
             className="flex flex-row lg:flex-col flex-shrink-0 overflow-x-auto lg:overflow-y-auto relative z-10 w-full lg:w-[172px] p-2 gap-2"
             style={{
@@ -132,7 +132,7 @@ export default function RaceControlScreen() {
               boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.12), 4px 0 20px rgba(0, 0, 0, 0.5)',
             }}
           >
-            {/* Grid Title Header */}
+             
             <div
               className="hidden lg:flex px-3.5 py-2.5 flex-shrink-0"
               style={{
@@ -148,7 +148,7 @@ export default function RaceControlScreen() {
               </div>
             </div>
 
-            {/* Drivers List */}
+             
             <div className="flex flex-row lg:flex-col gap-2 w-full">
               {drivers.map(d => {
                 const isSelected = d.driverNumber === selectedDriver;
@@ -173,7 +173,7 @@ export default function RaceControlScreen() {
                       padding: '6px 8px',
                     }}
                   >
-                    {/* Position + Name + Tyre */}
+                     
                     <div className="flex items-center gap-1.5">
                       <span
                         className="font-mono tabular-nums flex-shrink-0 text-center"
@@ -207,7 +207,7 @@ export default function RaceControlScreen() {
                         }}
                       />
                     </div>
-                    {/* Compound + Age + Pace */}
+                     
                     <div className="flex items-center gap-1.5 mt-1">
                       <span
                         className="font-black tracking-widest"
@@ -234,12 +234,12 @@ export default function RaceControlScreen() {
             </div>
           </div>
 
-          {/* Center Circuit View */}
+           
           <div
             className="flex-1 flex flex-col min-w-0 min-h-[340px] lg:min-h-0 overflow-hidden relative"
             style={{ borderRight: '1px solid rgba(255, 255, 255, 0.08)' }}
           >
-            {/* Circuit Header */}
+             
             <div
               className="flex-1 relative flex items-center justify-center min-h-0 overflow-hidden"
               style={{
@@ -249,7 +249,7 @@ export default function RaceControlScreen() {
                 `,
               }}
             >
-              {/* Header Bar */}
+               
               <div
                 className="absolute top-0 left-0 right-0 px-5 py-2 flex items-center justify-between z-10"
                 style={{
@@ -278,7 +278,7 @@ export default function RaceControlScreen() {
                 </div>
               </div>
 
-              {/* Map SVG */}
+               
               <div className="relative w-full h-full flex items-center justify-center p-4 sm:p-6 pt-10">
                 <CircuitMap
                   selectedDriver={selectedDriver}
@@ -287,7 +287,7 @@ export default function RaceControlScreen() {
                 />
               </div>
 
-              {/* Viewport Corners */}
+               
               {(['top-3 left-3', 'top-3 right-3', 'bottom-3 left-3', 'bottom-3 right-3'] as const).map((pos, i) => (
                 <div key={i} className={`absolute ${pos} opacity-40 pointer-events-none`}>
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -300,7 +300,7 @@ export default function RaceControlScreen() {
               ))}
             </div>
 
-            {/* Stint Timeline */}
+             
             <div
               className="flex-shrink-0 px-5 py-3 relative z-10"
               style={{
@@ -341,7 +341,7 @@ export default function RaceControlScreen() {
             </div>
           </div>
 
-          {/* Right Live Telemetry Panel */}
+           
           <div
             className="flex flex-col flex-shrink-0 overflow-visible lg:overflow-hidden relative z-10 w-full lg:w-[268px] border-t lg:border-t-0 lg:border-l border-white/10"
             style={{

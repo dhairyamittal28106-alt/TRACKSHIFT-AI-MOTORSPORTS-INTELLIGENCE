@@ -22,7 +22,7 @@ export default function SideNav() {
 
   return (
     <>
-      {/* Mobile Top Header (Mobile only < md) */}
+       
       <div
         className="md:hidden flex items-center justify-between px-4 py-3 border-b border-[#3A3A3A] z-40 relative flex-shrink-0 w-full"
         style={{
@@ -63,7 +63,7 @@ export default function SideNav() {
         </button>
       </div>
 
-      {/* Mobile Menu Drawer Overlay */}
+       
       <AnimatePresence>
         {isOpen && (
           <>
@@ -129,7 +129,7 @@ export default function SideNav() {
         )}
       </AnimatePresence>
 
-      {/* Desktop Vertical Sidebar (Desktop only >= md) */}
+       
       <nav
         className="hidden md:flex flex-col w-52 h-full flex-shrink-0 relative z-20"
         style={{

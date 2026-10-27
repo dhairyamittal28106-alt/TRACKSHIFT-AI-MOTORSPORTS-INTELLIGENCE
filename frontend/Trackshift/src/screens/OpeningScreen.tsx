@@ -53,7 +53,7 @@ export default function OpeningScreen() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-trackbg scanlines cursor-pointer select-none">
-      {/* Background Audio */}
+       
       <audio
         autoPlay
         loop
@@ -62,7 +62,7 @@ export default function OpeningScreen() {
         className="hidden"
       />
 
-      {/* Video Background */}
+       
       {}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <video
